@@ -1,95 +1,110 @@
-# RAG Backend System
+markdown
+# RAG Backend System with FastAPI
 
-A FastAPI-based backend for document processing and Retrieval-Augmented Generation (RAG) with interview booking capabilities.
+![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)
+![Qdrant](https://img.shields.io/badge/Qdrant-00B4D8?style=for-the-badge&logo=qdrant)
 
-## Features
+A production-ready backend for document processing and Retrieval-Augmented Generation (RAG) with interview scheduling capabilities.
 
-- 📄 **Document Processing**: Upload PDF/TXT files, chunk text, and generate embeddings
-- 🧠 **RAG Pipeline**: Query documents using LangChain with vector similarity search
-- 📅 **Interview Booking**: Schedule interviews with email confirmations
-- 🗄️ **Database Support**: PostgreSQL/SQLite for metadata + Qdrant/Pinecone for vectors
+## 🌟 Features
 
-## Tech Stack
+- **Document Ingestion**
+  - PDF/TXT file uploads
+  - Recursive & semantic chunking
+  - Embedding generation (SentenceTransformers/OpenAI)
 
-| Component           | Technology                |
-|---------------------|---------------------------|
-| Framework           | FastAPI                   |
-| Vector DB           | Qdrant                    |
-| Embeddings          | SentenceTransformers      |
-| Language Models     | LangChain                 |
-| Email               | SMTP (Gmail)              |
-| Caching             | Redis                     |
+- **RAG Pipeline**
+  - Vector similarity search (Qdrant)
+  - LangChain agent with tool-based reasoning
+  - Redis conversation memory
 
-## Setup Instructions
+- **Interview System**
+  - Booking management
+  - Email confirmations
+  - Database persistence
 
-### 1. Prerequisites
-- Python 3.10+
-- [Qdrant](https://qdrant.tech/documentation/quick-start/) running locally or in cloud
-- Redis server (for conversation memory)
+## 🛠️ Project Structure
+RAG_Jenisha/
+├── app/
+│ ├── routes/ # API endpoints
+│ │ ├── booking.py # Interview scheduling
+│ │ ├── documents.py # File processing
+│ │ └── rag.py # Query endpoints
+│ ├── services/ # Core logic
+│ │ ├── chunking.py # Text splitting
+│ │ ├── email.py # SMTP handler
+│ │ └── vector_db.py # Qdrant operations
+│ ├── models/ # Database models
+│ └── main.py # FastAPI app
+├── tests/ # Test cases
+├── .env.example # Configuration template
+└── requirements.txt # Dependencies
 
-### 2. Installation
+text
+
+## 🚀 Quick Start
+
+1. **Clone repository**
+   ```bash
+   git clone https://github.com/Jenisha-thapa/RAG_Jenisha.git
+   cd RAG_Jenisha
+Set up environment
+
 bash
-# Clone repository
-git clone https://github.com/Jenisha-thapa/RAG_Backend.git
-cd RAG_Backend
-
-# Create virtual environment
 python -m venv venv
 source venv/bin/activate  # Linux/Mac
-.\venv\Scripts\activate   # Windows
+.\venv\Scripts\activate  # Windows
+Install dependencies
 
-# Install dependencies
+bash
 pip install -r requirements.txt
+Configure environment
 
-3. Configuration
-Create .env file:
+bash
+cp .env.example .env
+# Edit .env with your credentials
+Run the server
 
-ini
-# Database
-DATABASE_URL=sqlite:///./rag.db
-
-# Qdrant
-VECTOR_DB_URL=http://localhost:6333
-VECTOR_DB_API_KEY=
-
-# Email (Gmail example)
-EMAIL_HOST=smtp.gmail.com
-EMAIL_PORT=587
-EMAIL_USERNAME=your@gmail.com
-EMAIL_PASSWORD=your-app-password
-
-4. Run the Application
 bash
 uvicorn app.main:app --reload
-Access docs at: http://localhost:8000/docs
+📚 API Documentation
+Access interactive docs at:
+🔗 http://localhost:8000/docs
 
-API Endpoints
+Key Endpoints
 Endpoint	Method	Description
-/documents/upload	POST	Upload and process documents
-/rag/query	POST	Query the RAG system
-/booking/schedule	POST	Schedule an interview
-Example Requests
-Upload Document
-bash
-curl -X POST -F "file=@sample.pdf" http://localhost:8000/documents/upload
-Query RAG System
-bash
-curl -X POST -H "Content-Type: application/json" \
--d '{"question":"What is PalmMind?"}' \
-http://localhost:8000/rag/query
-Deployment
-Docker
+/documents/upload	POST	Process PDF/TXT files
+/rag/query	POST	Query documents (RAG)
+/booking/schedule	POST	Book interviews
+Example Request:
+
+python
+import requests
+
+response = requests.post(
+    "http://localhost:8000/rag/query",
+    json={"question": "What is RAG?", "session_id": "test123"}
+)
+🐳 Docker Deployment
 bash
 docker-compose up -d
-Production
+🛠️ Troubleshooting
+Q: Getting 403 on Git push?
+A: Ensure you have write access to the repo or fork it first.
+
+Q: Vector DB connection issues?
+A: Verify Qdrant is running:
+
 bash
-uvicorn app.main:app --host 0.0.0.0 --port 80
-Project Structure
+docker run -p 6333:6333 qdrant/qdrant
+📄 License
+MIT License - See LICENSE for details.
+
 text
-app/
-├── main.py             # FastAPI app
-├── routes/             # API endpoints
-├── services/           # Business logic
-├── models/             # Database models
-└── utils/              # Helper functions
-License
+
+### Key Enhancements:
+1. **Badges** - Added FastAPI and Qdrant shields
+2. **Visual Structure** - Improved hierarchy with emojis
+3. **API Examples** - Included Python code snippet
+4. **Troubleshooting** - Common solutions
+5. **Docker Support** - Ready for containerization
